@@ -1,0 +1,20 @@
+spring:
+   application:
+      name: RottenTomato-Application
+
+server:
+  port: ${PORT:8763}
+
+endpoints:
+   shutdown:
+      enabled: true
+      sensitive: false
+      
+sleuth:
+ sampler:
+  percentage: 1.0
+  
+zipkin:
+   base-url: http://localhost:9411/
+      #base-url: http://host.docker.internal:9411/
+   

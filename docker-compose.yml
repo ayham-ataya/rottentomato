@@ -1,0 +1,175 @@
+services:
+
+
+  zuul-api:
+    image: zuul-cont:latest
+    environment:
+      - JAVA_OPTS=
+        - DZIPKIN_SERVER=http://zipkin-api:9411/
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8761/eureka"
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8762/eureka"
+    ports:
+      - 8764:8764
+    links:
+      - rating-api
+      - movies-api
+      - find-api
+      - find-api2
+      - front-api
+      - comment-api
+      - eureka-api
+      - eureka-api2
+      - zipkin-api
+    depends_on:
+      - eureka-api
+      - eureka-api2
+      - zipkin-api
+    networks:
+      mynet:
+        ipv4_address: 10.5.5.8
+
+  rating-api:
+    image: rating-cont:latest
+    environment:
+      - JAVA_OPTS=
+        - DZIPKIN_SERVER=http://zipkin-api:9411/
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8761/eureka"
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8762/eureka"
+    ports:
+      - 8767:8767
+    links:
+      - zipkin-api
+    depends_on:
+      - zipkin-api
+    networks:
+      mynet:
+        ipv4_address: 10.5.5.11
+
+  movies-api:
+    image: movies-cont:latest
+    environment:
+      - JAVA_OPTS=
+        - DZIPKIN_SERVER=http://zipkin-api:9411/
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8761/eureka"
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8762/eureka"
+    ports:
+      - 8765:8765
+    links:
+      - zipkin-api
+    depends_on:
+      - zipkin-api
+    networks:
+      mynet:
+        ipv4_address: 10.5.5.9
+
+
+  front-api:
+    image: front-cont:latest
+    environment:
+      - JAVA_OPTS=
+        - DZIPKIN_SERVER=http://zipkin-api:9411/
+    ports:
+      - 8763:8763
+    links:
+      - zipkin-api
+    depends_on:
+      - zipkin-api
+    networks:
+      mynet:
+        ipv4_address: 10.5.5.7
+
+  find-api:
+    image: find-cont:latest
+    environment:
+      - JAVA_OPTS=
+        - DZIPKIN_SERVER=http://zipkin-api:9411/
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8761/eureka"
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8762/eureka"
+    ports:
+      - 8768:8768
+    links:
+      - zipkin-api
+    depends_on:
+      - zipkin-api
+    networks:
+      mynet:
+        ipv4_address: 10.5.5.12
+
+  find-api2:
+    image: find2-cont:latest
+    environment:
+      - JAVA_OPTS=
+        - DZIPKIN_SERVER=http://zipkin-api:9411/
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8761/eureka"
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8762/eureka"
+    ports:
+      - 8769:8769
+    links:
+      - zipkin-api
+    depends_on:
+      - zipkin-api
+    networks:
+      mynet:
+        ipv4_address: 10.5.5.13
+
+  eureka-api:
+    image: eureka-cont:latest
+    ports:
+      - 8761:8761
+    networks:
+      mynet:
+        ipv4_address: 10.5.5.5
+    environment:
+      - "SPRING_PROFILES_ACTIVE=zone1"
+      - JAVA_OPTS=
+        - DZIPKIN_SERVER=http://zipkin-api:9411/
+
+  eureka-api2:
+    image: eureka2-cont:latest
+    ports:
+      - 8762:8762
+    networks:
+      mynet:
+        ipv4_address: 10.5.5.6
+    environment:
+      - "SPRING_PROFILES_ACTIVE=zone2"
+      - JAVA_OPTS=
+        - DZIPKIN_SERVER=http://zipkin-api:9411/
+
+  comment-api:
+    image: comment-cont:latest
+    environment:
+      - JAVA_OPTS=
+        - DZIPKIN_SERVER=http://zipkin-api:9411/
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8761/eureka"
+      - "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://host.docker.internal:8762/eureka"
+    ports:
+      - 8766:8766
+    links:
+      - zipkin-api
+    depends_on:
+      - zipkin-api
+    networks:
+      mynet:
+        ipv4_address: 10.5.5.10
+
+  zipkin-api:
+    image: zipkin-cont:latest
+    environment:
+      - STORAGE_TYPE=mem
+    ports:
+      - 9411:9411
+    networks:
+      mynet:
+        ipv4_address: 10.5.5.14
+    depends_on:
+      - eureka-api
+      - eureka-api2
+
+networks:
+  mynet:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.5.0/24
+

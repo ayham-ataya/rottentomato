@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html  lang="ar" dir="rtl"
+ xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments.html :: headerfiles">
+ <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Rotten Tomatto</title>
+  <!-- base:css -->
+  <link rel="stylesheet" href="/../../new/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/../../new/vendors/base/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="/../../new/css/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="/../../new/images/photo5810167110637302253.jpg" />
+</head>
+	<body>
+	<header th:insert="fragments.html :: nav"></header>
+
+		<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<!-- Product details -->
+					<div class="col-md-12">
+						<div class="product-details">
+							<h1 th:inline="text" >
+							   [[${movie.name}]]
+							</h1>
+							<hr>
+							<h6>Rating :</h6>
+							<h5 th:text="${rating}"></h5>
+							<hr>
+						</div>
+					</div>
+					<!-- /Product details -->
+					<div  class="col-md-12">
+						<h3>About movie:</h3>
+						<hr>
+						<h5 th:text="${movie.text}" ></h5>
+					</div>
+					
+					
+					<div  class="col-md-12">
+					<hr>
+					<h3>Criticisms</h3>
+					<table id="example2" class="table table-bordered table-hover">
+		                <thead>
+		                    <tr>
+		                    	<th></th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+		                <tr th:if="${commentsList.empty}">
+		                        <td colspan="2">No Comments Yet</td>
+		                    </tr>
+		                    <tr th:each="comment : ${commentsList}">
+		                   		<td><span th:text="${comment.commentContent}"> content </span></td>
+		                    </tr>
+		                </tbody>
+		            </table>
+					
+					</div>
+
+		<!-- Review Form -->
+		<h3>Comment</h3>
+			<div class="col-md-12">
+				<div id="review-form">
+					<form  action="#" th:action="@{/RottenTomamto/addComment/}+${{movie.id}}" th:object="${comment}" method="post">
+						<div class="form-group">
+                   			<input type="text" name="commentcontent" class="form-control" placeholder="your review" th:field="*{commentContent}">
+                 		</div>
+						<button class="btn btn-primary btn-lg font-weight-medium auth-form-btn">Add comment</button>
+					</form>
+				</div>
+			</div>
+		<!-- /Review Form -->
+
+	<hr>
+
+
+	<h3>Rate this Movie</h3>
+	<div class="col-md-12">
+				<div id="review-form">
+					<form  action="#" th:action="@{/RottenTomamto/addRate/}+${{movie.id}}" th:object="${rate}" method="post">
+						<div class="form-group">
+                   			<input type="number" min = "0" max="5" name="commentcontent" class="form-control" placeholder="your review" th:field="*{rateValue}">
+                 		</div>
+						<button class="btn btn-primary btn-lg font-weight-medium auth-form-btn">Rate this movie</button>
+					</form>
+				</div>
+			</div>
+
+			<div class="col-md-12">
+				<div id="review-form">
+					<form  action="#" th:action="@{/RottenTomamto/deleteMovie/}+${{movie.id}}" th:object="${rate}" method="get">
+						<button class="btn btn-danger btn-lg font-weight-medium auth-form-btn">Delete</button>
+					</form>
+				</div>
+			</div>
+			
+
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
+
+		<!-- FOOTER -->
+		<footer id="footer">
+			
+
+		</footer>
+		<!-- /FOOTER -->
+
+		<!-- jQuery Plugins -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/slick.min.js"></script>
+		<script src="js/nouislider.min.js"></script>
+		<script src="js/jquery.zoom.min.js"></script>
+		<script src="js/main.js"></script>
+
+	</body>
+</html>

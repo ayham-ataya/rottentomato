@@ -1,0 +1,45 @@
+spring:
+   application:
+      name: CommentsAPI
+   rabbitmq:
+     #host: localhost
+     host: localhost
+     port: 5672
+     username: guest
+     password: guest
+     
+server:
+  port: ${PORT:8766}
+  
+  
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
+            #defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
+            #defaultZone: http://host.docker.internal:8761/eureka,http://host.docker.internal:8762/eureka
+            #http://192.168.10.1:8761/eureka,http://192.168.10.10:8762/eureka
+            
+            
+  instance:
+    instance-id: Comments-1
+    metadataMap:
+      zone: zone1
+            
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+    
+  
+    
+zipkin:
+   base-url: http://localhost:9411/
+   #base-url: http://ZIPKIN-SERVER:9411/
+      #base-url: http://host.docker.internal:9411/
+      
+      
+sleuth:
+ sampler:
+  percentage: 1.0
+   
